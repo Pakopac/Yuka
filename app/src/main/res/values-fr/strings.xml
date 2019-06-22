@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">Mon comparateur</string>
-
+    <string name="title">Petits pois et carottes</string>
+    <string name="mark">Cassegrain</string>
+    <string name="barCode_title">Code barres</string>
+    <string name="barCode_value">3083680085304</string>
+    <string name="quantity_title">Quantité</string>
+    <string name="quantity_value">400 g (280 g net égoutté)</string>
+    <string name="cities_title">Vendu en</string>
+    <string name="cities_value">France, Japon, Suisse</string>
+    <string name="ingredients_value">Petits pois 66%, eau, garniture 2,8% (salade, oignon grelot), sucre, sel, arôme
+        naturel
+    </string>
+    <string name="ingredients_title">Ingrédients</string>
+    <string name="allergen_title">substances allèrgenes</string>
+    <string name="additives_title">Additifs</string>
+    <string name="allergene_value">Aucunes</string>
+    <string name="additives_values">Aucun</string>
 </resources>

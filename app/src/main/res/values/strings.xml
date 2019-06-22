@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">OpenFoodFacts</string>
+    <string name="title">Peas and carrots</string>
+    <string name="mark">Cassegrain</string>
+    <string name="barCode_title">Bar code</string>
+    <string name="barCode_value">3083680085304</string>
+    <string name="quantity_title">Quantity</string>
+    <string name="quantity_value">400 g (280 g net drained)</string>
+    <string name="cities_title">Sell in</string>
+    <string name="cities_value">France, Japan, Swiss</string>
+    <string name="ingredients_title">Ingredients</string>
+    <string name="ingredients_value">Peas 66%, water, garnish 2,8% (salad, onion, bell), sugar, sal, natural aroma
+    </string>
+    <string name="allergen_title">allergenic substances</string>
+    <string name="additives_title">Additives</string>
+    <string name="allergene_value">any</string>
+    <string name="additives_values">any</string>
 </resources>
