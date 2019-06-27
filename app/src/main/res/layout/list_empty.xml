@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:src="@drawable/ic_empty_saved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="60dp"/>
+
+    <TextView
+            android:id="@+id/no_scan_text"
+            android:text="@string/no_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guidelineCenter"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    <TextView
+            android:id="@+id/no_scan_subtext"
+            android:text="@string/no_scan_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/no_scan_text"
+            android:layout_marginTop="30dp"
+            android:textSize="14sp"/>
+
+    <Button
+            android:text="@string/btn_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/no_scan_subtext"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/white"
+            android:background="@drawable/ic_background_button"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:id="@+id/guidelineCenter"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
