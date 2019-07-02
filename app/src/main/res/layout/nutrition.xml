@@ -1,10 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    android:layout_width="match_parent"
-                                                   android:layout_height="match_parent">
+                                                   android:layout_height="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
+            android:id="@+id/nutritional_reference"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_nutrition"/>
+            android:text="@string/title_nutrition"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"/>
+
+    <View
+            android:id="@+id/first_circle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+    />
+    <TextView
+            android:id="@+id/fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.8g de matières grasses / Lipides"
+            app:layout_constraintTop_toBottomOf="@id/nutritional_reference"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"
+            android:layout_marginTop="20dp"/>
+
+    <TextView
+            android:id="@+id/fat_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="en faible quantité"
+            app:layout_constraintTop_toBottomOf="@id/fat"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"/>
+
+    <TextView
+            android:id="@+id/fatty_acide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.1g d'acide gras saturé"
+            app:layout_constraintTop_toBottomOf="@id/fat_level"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:id="@+id/fatty_acide_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="en faible quantité"
+            app:layout_constraintTop_toBottomOf="@id/fatty_acide"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"/>
+
+
+    <TextView
+            android:id="@+id/sugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.2g de sucre"
+            app:layout_constraintTop_toBottomOf="@id/fatty_acide_level"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:id="@+id/sugar_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="en quantité modérée"
+            app:layout_constraintTop_toBottomOf="@id/sugar"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"/>
+
+    <TextView
+            android:id="@+id/salt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.75g de Sel"
+            app:layout_constraintTop_toBottomOf="@id/sugar_level"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:id="@+id/salt_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="en quantité modérée"
+            app:layout_constraintTop_toBottomOf="@id/salt"
+            app:layout_constraintLeft_toLeftOf="@id/margin_start"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/margin_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

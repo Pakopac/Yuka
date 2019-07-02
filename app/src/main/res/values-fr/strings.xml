@@ -9,4 +9,7 @@
     <string name="no_scan_sub">Cliquez sur le bouton ci-dessous pour commencer</string>
     <string name="no_scan">Vous n\'avez encore rien scanné !</string>
     <string name="btn_scan">SCANNER UN PRODUIT</string>
+    <string name="my_products">Mes produits</string>
+    <string name="details">Détails</string>
+    <string name="barCode_image">Code barre</string>
 </resources>
