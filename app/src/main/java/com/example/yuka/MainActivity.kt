@@ -96,28 +96,6 @@ class MainActivity : AppCompatActivity(), ItemListener {
         }
 
 
-
-        // Ouvrir un nouvel écran
-        //val intent = Intent(this,SecondActivity::class.java)
-        //startActivity(intent)
-        //intent.putExtra("name", "toto")
-        //intent.putExtra("product", product1)
-
-        //Fermer l'écran en cours
-        //finish()
-
-        /*
-       val viewEmpty : TextView = findViewById(R.id.empty)
-       val viewNotEmpty : RecyclerView = findViewById(R.id.list)
-
-        if(listEmpty.isEmpty()){
-            viewEmpty.visibility = View.VISIBLE
-        }
-        else{
-            viewEmpty.visibility = View.GONE
-        }*/
-
-
         supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.degrade))
         supportActionBar?.setTitle(getString(R.string.my_products))
 

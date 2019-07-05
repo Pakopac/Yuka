@@ -12,4 +12,7 @@
     <string name="my_products">Mes produits</string>
     <string name="details">Détails</string>
     <string name="barCode_image">Code barre</string>
+    <string name="first_fragment">Fiche</string>
+    <string name="second_fragment">Nutrition</string>
+    <string name="third_fragment">Infos nutritionnelles</string>
 </resources>
