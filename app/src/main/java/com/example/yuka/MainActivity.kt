@@ -2,7 +2,6 @@ package com.example.yuka
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
@@ -12,16 +11,10 @@ import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.list.*
-import kotlinx.android.synthetic.main.product_sheet.*
 
 class MainActivity : AppCompatActivity(), ItemListener {
 
@@ -124,9 +117,9 @@ data class Product(
     var nutriscore: String,
     var url:String,
     var quantity: String,
-    var cities: List<String>,
-    var ingredients: List<String>,
-    var allergen: List<String>,
-    var additives: List<String>,
+    var cities: List<String?>?,
+    var ingredients: List<String?>?,
+    var allergen: List<String?>?,
+    var additives: Map<String, String>?,
     var calories: Int) : Parcelable {
 }
