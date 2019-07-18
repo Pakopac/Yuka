@@ -11,8 +11,13 @@
     <string name="btn_scan">SCANNER UN PRODUIT</string>
     <string name="my_products">Mes produits</string>
     <string name="details">Détails</string>
-    <string name="barCode_image">Code barre</string>
+    <string name="barCode_title">Code barre</string>
     <string name="first_fragment">Fiche</string>
     <string name="second_fragment">Nutrition</string>
     <string name="third_fragment">Infos nutritionnelles</string>
+    <string name="quantity_title">Quantité</string>
+    <string name="cities_title">Vendu en</string>
+    <string name="Ingredients_title">Ingrédients</string>
+    <string name="allergens_title">Substances allergènes</string>
+    <string name="additives_title">Additifs</string>
 </resources>

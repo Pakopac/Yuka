@@ -1,41 +1,58 @@
 package com.example.yuka
 
-import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.second_activity.*
 import kotlinx.android.synthetic.main.product_sheet.*
-import kotlinx.android.synthetic.main.product_sheet.view.*
 import androidx.fragment.app.FragmentManager
-import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.second_activity.*
-
+import com.example.yuka.network.NetworkRequest.getAPI
+import com.example.yuka.network.ServerResponse
+import kotlinx.android.synthetic.main.product_sheet.view.*
+import retrofit2.Call
+import retrofit2.Response
 
 
 class SecondActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.second_activity)
         tabs.setupWithViewPager(viewpager)
         setSupportActionBar(toolbar)
         val product1 = intent.getParcelableExtra<Product>("product")
-        viewpager.adapter = ProductDetailsAdapter(supportFragmentManager, product1)
+        val barCode = intent.getStringExtra("barcode")
 
+        //val product = getAPI(intent.getStringExtra("barcode"))
+        //viewpager.adapter = ProductDetailsAdapter(supportFragmentManager, product)
 
+            getAPI(barCode, object : retrofit2.Callback<ServerResponse> {
+            override fun onResponse(call: Call<ServerResponse>,
+                                    response: Response<ServerResponse>
+            ) {
+
+                val getProducts = response.body()?.toProduct(response.body())
+                Log.d("abcde",response.body()?.toProduct(response.body()).toString())
+                viewpager.adapter = ProductDetailsAdapter(supportFragmentManager, getProducts!!)
+            }
+
+            override fun onFailure(call: Call<ServerResponse>,
+                                   t: Throwable) {
+                t.printStackTrace();
+            }
+        })
 
         supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.degrade))
         supportActionBar?.setTitle(getString(R.string.details))
@@ -54,7 +71,9 @@ class SecondActivity : AppCompatActivity() {
             setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
     }
+
 }
+
 
 class SheetFragment() : Fragment(){
     companion object {
@@ -78,22 +97,27 @@ class SheetFragment() : Fragment(){
 
         val product = arguments?.getParcelable<Product>("product")
         super.onViewCreated(view, savedInstanceState)
-        barCode.text = product?.barCode
-        quantity.text = product?.quantity
-        cities.text = product?.cities?.joinToString()
-        ingredients.text = product?.ingredients?.joinToString()
-        allergen.text = product?.allergen?.joinToString()
-        additives.text = product?.additives?.joinToString()
+        title.text = product?.name
+        mark.text = product?.mark
+        barCode.setTitleValue( resources.getString(R.string.barCode_title),product?.barCode)
+        quantity.setTitleValue( resources.getString(R.string.quantity_title),product?.quantity)
+        cities.setTitleValue( resources.getString(R.string.cities_title),product?.cities?.joinToString())
+        ingredients.setTitleValue( resources.getString(R.string.Ingredients_title),product?.ingredients?.joinToString())
+        allergen.setTitleValue( resources.getString(R.string.allergens_title),product?.allergen?.joinToString())
+        additives.setTitleValue( resources.getString(R.string.additives_title),product?.additives?.joinToString())
 
-        Picasso.get().load("https://static.openfoodfacts.org/images/products/308/368/008/5304/front_fr.7.400.jpg").into(image_product_sheet)
-
-
-       /*var nutriscore = "a"
-       nutriscore_image.setImageResource(resources.getIdentifier("nutriscore_${nutriscore.toLowerCase()}", "drawable", getActivity?.getPackage))*/
+        Picasso.get().load(product?.url).into(image_product_sheet)
+        nutriscore_image.setImageResource(resources.getIdentifier("nutriscore_${product?.nutriscore?.toLowerCase()}", "drawable", view.context.packageName))
     }
 
 
 
+}
+
+fun TextView.setTitleValue(title: String, value: String?) {
+    text = SpannableString("$title: $value").apply {
+        setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+    }
 }
 
 class NutritionFragment() : Fragment(){

@@ -11,10 +11,13 @@ import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.list.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), ItemListener {
 
@@ -71,9 +74,19 @@ class MainActivity : AppCompatActivity(), ItemListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.menu, menu)
-
         return super.onCreateOptionsMenu(menu)
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.barcode_icon -> {
+                scan()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,19 +106,24 @@ class MainActivity : AppCompatActivity(), ItemListener {
         supportActionBar?.setTitle(getString(R.string.my_products))
 
     }
-
-    fun TextView.setTitleValue(title: String, value: String) {
-        text = SpannableString("$title: $value").apply {
-            setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+  override fun onClick(product: Product) {
+      /*val intent = Intent(this,SecondActivity::class.java)
+      intent.putExtra("product", product1)
+      startActivity(intent)*/
+  }
+    fun scan() {
+        val intent = Intent("com.google.zxing.client.android.SCAN")
+        intent.putExtra("SCAN_FORMATS ", "EAN_13")
+        startActivityForResult(intent,0)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
+        val intent = Intent(this,SecondActivity::class.java)
+        if(data != null && data.extras.containsKey("SCAN_RESULT")) {
+            intent.putExtra("barcode", data?.getStringExtra("SCAN_RESULT").toString())
+            intent.putExtra("product", product1)
+            startActivity(intent)
         }
     }
-  override fun onClick(product: Product) {
-      Log.d("yo",product1.name)
-      val intent = Intent(this,SecondActivity::class.java)
-      intent.putExtra("product", product1)
-      startActivity(intent)
-
-  }
 
 }
 
@@ -120,6 +138,6 @@ data class Product(
     var cities: List<String?>?,
     var ingredients: List<String?>?,
     var allergen: List<String?>?,
-    var additives: Map<String, String>?,
+    var additives: List<String?>?,
     var calories: Int) : Parcelable {
 }
