@@ -24,6 +24,7 @@ import com.example.yuka.network.NetworkRequest.getAPI
 import com.example.yuka.network.ServerResponse
 import com.example.yuka.network.toProduct
 import kotlinx.android.synthetic.main.infos.*
+import kotlinx.android.synthetic.main.list.*
 import kotlinx.android.synthetic.main.nutrition.*
 import kotlinx.android.synthetic.main.nutrition.fat
 import kotlinx.android.synthetic.main.nutrition.salt
@@ -43,10 +44,7 @@ class SecondActivity : AppCompatActivity() {
         val product1 = intent.getParcelableExtra<Product>("product")
         val barCode = intent.getStringExtra("barcode")
 
-        //val product = getAPI(intent.getStringExtra("barcode"))
-        //viewpager.adapter = ProductDetailsAdapter(supportFragmentManager, product)
-
-            getAPI(barCode, object : retrofit2.Callback<ServerResponse> {
+        getAPI(barCode, object : retrofit2.Callback<ServerResponse> {
             override fun onResponse(call: Call<ServerResponse>,
                                     response: Response<ServerResponse>
             ) {
@@ -61,8 +59,10 @@ class SecondActivity : AppCompatActivity() {
                 circle_salt.setCircleColor(getProducts?.nutrition?.salt?.quantityFor100g!!.toFloat(),0.3.toFloat(),1.5.toFloat())
             }
 
-            override fun onFailure(call: Call<ServerResponse>,
-                                   t: Throwable) {
+            override fun onFailure(
+                call: Call<ServerResponse>,
+                t: Throwable
+            ) {
                 t.printStackTrace();
             }
         })
@@ -71,14 +71,8 @@ class SecondActivity : AppCompatActivity() {
         supportActionBar?.setTitle(getString(R.string.details))
 
 
-        /*var nutriscore = "a"
-        nutriscore_image.setImageResource(resources.getIdentifier("nutriscore_${nutriscore.toLowerCase()}", "drawable", packageName))*/
-
-        /*val first_circle: View = findViewById(R.id.first_circle)
-
-        DrawableCompat.setTintList(first_circle.background, ColorStateList.valueOf(ContextCompat.getColor(this,(R.color.nutrient_level_low))))*/
-
     }
+
     fun TextView.setTitleValue(title: String, value: String) {
         text = SpannableString("$title: $value").apply {
             setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
@@ -88,9 +82,9 @@ class SecondActivity : AppCompatActivity() {
 }
 
 
-class SheetFragment() : Fragment(){
+class SheetFragment() : Fragment() {
     companion object {
-        fun newInstance(product: Product) : SheetFragment {
+        fun newInstance(product: Product): SheetFragment {
             val fragment = SheetFragment()
             val args = Bundle()
             args.putParcelable("product", product)
@@ -98,12 +92,9 @@ class SheetFragment() : Fragment(){
             return fragment
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-
-       // Picasso.get().load("https://static.openfoodfacts.org/images/products/308/368/008/5304/front_fr.7.400.jpg").into(layout.image_product_sheet)
-
-        return inflater.inflate(R.layout.product_sheet,container,false)
+        return inflater.inflate(R.layout.product_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,17 +103,22 @@ class SheetFragment() : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         title.text = product?.name
         mark.text = product?.mark
-        barCode.setTitleValue( resources.getString(R.string.barCode_title),product?.barCode)
-        quantity.setTitleValue( resources.getString(R.string.quantity_title),product?.quantity)
-        cities.setTitleValue( resources.getString(R.string.cities_title),product?.cities?.joinToString())
-        ingredients.setTitleValue( resources.getString(R.string.Ingredients_title),product?.ingredients?.joinToString())
-        allergen.setTitleValue( resources.getString(R.string.allergens_title),product?.allergen?.joinToString())
-        additives.setTitleValue( resources.getString(R.string.additives_title),product?.additives?.joinToString())
+        barCode.setTitleValue(resources.getString(R.string.barCode_title), product?.barCode)
+        quantity.setTitleValue(resources.getString(R.string.quantity_title), product?.quantity)
+        cities.setTitleValue(resources.getString(R.string.cities_title), product?.cities?.joinToString())
+        ingredients.setTitleValue(resources.getString(R.string.Ingredients_title), product?.ingredients?.joinToString())
+        allergen.setTitleValue(resources.getString(R.string.allergens_title), product?.allergen?.joinToString())
+        additives.setTitleValue(resources.getString(R.string.additives_title), product?.additives?.joinToString())
 
         Picasso.get().load(product?.url).into(image_product_sheet)
-        nutriscore_image.setImageResource(resources.getIdentifier("nutriscore_${product?.nutriscore?.toLowerCase()}", "drawable", view.context.packageName))
+        nutriscore_image.setImageResource(
+            resources.getIdentifier(
+                "nutriscore_${product?.nutriscore?.toLowerCase()}",
+                "drawable",
+                view.context.packageName
+            )
+        )
     }
-
 
 
 }
@@ -133,9 +129,9 @@ fun TextView.setTitleValue(title: String, value: String?) {
     }
 }
 
-class NutritionFragment() : Fragment(){
+class NutritionFragment() : Fragment() {
     companion object {
-        fun newInstance(product: Product) : NutritionFragment {
+        fun newInstance(product: Product): NutritionFragment {
             val fragment = NutritionFragment()
             val args = Bundle()
             args.putParcelable("product", product)
@@ -145,27 +141,42 @@ class NutritionFragment() : Fragment(){
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.nutrition,container,false)
+        return inflater.inflate(R.layout.nutrition, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val product = arguments?.getParcelable<Product>("product")
         super.onViewCreated(view, savedInstanceState)
 
-        fat?.setNutritionText(product?.nutrition?.fat?.quantityFor100g,product?.nutrition?.fat?.unit, resources.getString(R.string.nutrition_Fat))
-        fatty_acide?.setNutritionText(product?.nutrition?.saturatedFattyAcid?.quantityFor100g,product?.nutrition?.saturatedFattyAcid?.unit, resources.getString(R.string.nutrition_fattyAcid))
-        sugar?.setNutritionText(product?.nutrition?.sugar?.quantityFor100g,product?.nutrition?.sugar?.unit, resources.getString(R.string.nutrition_sugar))
-        salt?.setNutritionText(product?.nutrition?.salt?.quantityFor100g,product?.nutrition?.salt?.unit, resources.getString(R.string.nutrition_salt))
+        fat?.setNutritionText(
+            product?.nutrition?.fat?.quantityFor100g,
+            product?.nutrition?.fat?.unit,
+            resources.getString(R.string.nutrition_Fat)
+        )
+        fatty_acide?.setNutritionText(
+            product?.nutrition?.saturatedFattyAcid?.quantityFor100g,
+            product?.nutrition?.saturatedFattyAcid?.unit,
+            resources.getString(R.string.nutrition_fattyAcid)
+        )
+        sugar?.setNutritionText(
+            product?.nutrition?.sugar?.quantityFor100g,
+            product?.nutrition?.sugar?.unit,
+            resources.getString(R.string.nutrition_sugar)
+        )
+        salt?.setNutritionText(
+            product?.nutrition?.salt?.quantityFor100g,
+            product?.nutrition?.salt?.unit,
+            resources.getString(R.string.nutrition_salt)
+        )
 
     }
 
 
-
 }
 
-class InfosFragment() : Fragment(){
+class InfosFragment() : Fragment() {
     companion object {
-        fun newInstance(product: Product) : InfosFragment {
+        fun newInstance(product: Product): InfosFragment {
             val fragment = InfosFragment()
             val args = Bundle()
             args.putParcelable("product", product)
@@ -175,43 +186,59 @@ class InfosFragment() : Fragment(){
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.infos,container,false)
+        return inflater.inflate(R.layout.infos, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val product = arguments?.getParcelable<Product>("product")
         super.onViewCreated(view, savedInstanceState)
 
-        energy_value100g.setInfosText(product?.nutrition?.energy?.quantityFor100g,product?.nutrition?.energy?.unit)
-        energy_valuePart.setInfosText(product?.nutrition?.energy?.quantityPerPortion,product?.nutrition?.energy?.unit)
+        energy_value100g.setInfosText(product?.nutrition?.energy?.quantityFor100g, product?.nutrition?.energy?.unit)
+        energy_valuePart.setInfosText(product?.nutrition?.energy?.quantityPerPortion, product?.nutrition?.energy?.unit)
 
-        fat_value100g.setInfosText(product?.nutrition?.fat?.quantityFor100g,product?.nutrition?.fat?.unit)
-        fat_valuePart.setInfosText(product?.nutrition?.fat?.quantityPerPortion,product?.nutrition?.fat?.unit)
+        fat_value100g.setInfosText(product?.nutrition?.fat?.quantityFor100g, product?.nutrition?.fat?.unit)
+        fat_valuePart.setInfosText(product?.nutrition?.fat?.quantityPerPortion, product?.nutrition?.fat?.unit)
 
-        saturedFatty_value100g.setInfosText(product?.nutrition?.saturatedFattyAcid?.quantityFor100g,product?.nutrition?.saturatedFattyAcid?.unit)
-        saturedFatty_valuePart.setInfosText(product?.nutrition?.saturatedFattyAcid?.quantityPerPortion,product?.nutrition?.saturatedFattyAcid?.unit)
+        saturedFatty_value100g.setInfosText(
+            product?.nutrition?.saturatedFattyAcid?.quantityFor100g,
+            product?.nutrition?.saturatedFattyAcid?.unit
+        )
+        saturedFatty_valuePart.setInfosText(
+            product?.nutrition?.saturatedFattyAcid?.quantityPerPortion,
+            product?.nutrition?.saturatedFattyAcid?.unit
+        )
 
-        carbohydrate_value100g.setInfosText(product?.nutrition?.carbohydrates?.quantityFor100g,product?.nutrition?.carbohydrates?.unit)
-        carbohydrate_valuePart.setInfosText(product?.nutrition?.carbohydrates?.quantityPerPortion,product?.nutrition?.carbohydrates?.unit)
+        carbohydrate_value100g.setInfosText(
+            product?.nutrition?.carbohydrates?.quantityFor100g,
+            product?.nutrition?.carbohydrates?.unit
+        )
+        carbohydrate_valuePart.setInfosText(
+            product?.nutrition?.carbohydrates?.quantityPerPortion,
+            product?.nutrition?.carbohydrates?.unit
+        )
 
-        sugar_value100g.setInfosText(product?.nutrition?.sugar?.quantityFor100g,product?.nutrition?.sugar?.unit)
-        sugar_valuePart.setInfosText(product?.nutrition?.sugar?.quantityPerPortion,product?.nutrition?.sugar?.unit)
+        sugar_value100g.setInfosText(product?.nutrition?.sugar?.quantityFor100g, product?.nutrition?.sugar?.unit)
+        sugar_valuePart.setInfosText(product?.nutrition?.sugar?.quantityPerPortion, product?.nutrition?.sugar?.unit)
 
-        fibers_value100g.setInfosText(product?.nutrition?.fibers?.quantityFor100g,product?.nutrition?.fibers?.unit)
-        fibers_valuePart.setInfosText(product?.nutrition?.fibers?.quantityPerPortion,product?.nutrition?.fibers?.unit)
+        fibers_value100g.setInfosText(product?.nutrition?.fibers?.quantityFor100g, product?.nutrition?.fibers?.unit)
+        fibers_valuePart.setInfosText(product?.nutrition?.fibers?.quantityPerPortion, product?.nutrition?.fibers?.unit)
 
-        proteins_value100g.setInfosText(product?.nutrition?.proteins?.quantityFor100g,product?.nutrition?.proteins?.unit)
-        proteins_valuePart.setInfosText(product?.nutrition?.proteins?.quantityPerPortion,product?.nutrition?.proteins?.unit)
+        proteins_value100g.setInfosText(
+            product?.nutrition?.proteins?.quantityFor100g,
+            product?.nutrition?.proteins?.unit
+        )
+        proteins_valuePart.setInfosText(
+            product?.nutrition?.proteins?.quantityPerPortion,
+            product?.nutrition?.proteins?.unit
+        )
 
-        salt_value100g.setInfosText(product?.nutrition?.salt?.quantityFor100g,product?.nutrition?.salt?.unit)
-        salt_valuePart.setInfosText(product?.nutrition?.salt?.quantityPerPortion,product?.nutrition?.salt?.unit)
+        salt_value100g.setInfosText(product?.nutrition?.salt?.quantityFor100g, product?.nutrition?.salt?.unit)
+        salt_valuePart.setInfosText(product?.nutrition?.salt?.quantityPerPortion, product?.nutrition?.salt?.unit)
 
-        sodium_value100g.setInfosText(product?.nutrition?.sodium?.quantityFor100g,product?.nutrition?.sodium?.unit)
-        sodium_valuePart.setInfosText(product?.nutrition?.sodium?.quantityPerPortion,product?.nutrition?.sodium?.unit)
+        sodium_value100g.setInfosText(product?.nutrition?.sodium?.quantityFor100g, product?.nutrition?.sodium?.unit)
+        sodium_valuePart.setInfosText(product?.nutrition?.sodium?.quantityPerPortion, product?.nutrition?.sodium?.unit)
 
     }
-
-
 
 }
 
@@ -228,18 +255,16 @@ fun TextView.setInfosText(value: String?, unit: String?) {
 
 }
 
-fun View.setCircleColor(value:Float, min:Float , max:Float) {
-    var color:Int = R.color.nutrient_level_low
+fun View.setCircleColor(value: Float, min: Float, max: Float) {
+    var color: Int = R.color.nutrient_level_low
 
-        if(value < min){
-            color = R.color.nutrient_level_low
-        }
-        else if(min < value && value < max){
-            color = R.color.nutrient_level_moderate
-        }
-        else if(value > max){
-            color = R.color.nutrient_level_high
-        }
+    if (value < min) {
+        color = R.color.nutrient_level_low
+    } else if (min < value && value < max) {
+        color = R.color.nutrient_level_moderate
+    } else if (value > max) {
+        color = R.color.nutrient_level_high
+    }
 
     DrawableCompat.setTintList(background, ColorStateList.valueOf(resources.getColor(color)))
 }

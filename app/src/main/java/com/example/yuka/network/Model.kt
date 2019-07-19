@@ -81,7 +81,8 @@ data class ServerResponse(
         )
     }
 }
-fun toProduct(server: ServerResponse?) : Product {
+
+fun toProduct(server: ServerResponse?): Product {
     val product = Product(
         server?.response?.name.toString(),
         server?.response?.brands.toString(),
@@ -99,6 +100,7 @@ fun toProduct(server: ServerResponse?) : Product {
 
     return product
 }
+
 fun toNutritionFacts(server: ServerResponse.NutritionFacts?): NutritionFacts {
     return NutritionFacts(
         toNutritionFact(server?.energy),
@@ -113,6 +115,7 @@ fun toNutritionFacts(server: ServerResponse.NutritionFacts?): NutritionFacts {
 
     )
 }
+
 fun toNutritionFact(server: ServerResponse.NutritionFacts.NutritionFact?): NutritionFactsItem {
     return NutritionFactsItem(
         server?.unit.toString(),

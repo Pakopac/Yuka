@@ -7,13 +7,17 @@ import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import com.example.yuka.network.ServerResponse
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
+
 
 class MainActivity : AppCompatActivity(), ItemListener {
 
 
     val listEmpty = listOf<Product>()
+    val listProduct = listOf<Product>()
 
     /*val productList = listOf(Product(
         "Petits pois et carottes",
@@ -84,6 +88,10 @@ class MainActivity : AppCompatActivity(), ItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_empty)
+        val btnScan = findViewById(R.id.btnScan) as Button
+        btnScan.setOnClickListener {
+            scan()
+        }
         /*if(currentList.isEmpty()) {
             setContentView(R.layout.list_empty)
         }
@@ -99,20 +107,25 @@ class MainActivity : AppCompatActivity(), ItemListener {
         supportActionBar?.setTitle(getString(R.string.my_products))
 
     }
-  override fun onClick(product: Product) {
-      /*val intent = Intent(this,SecondActivity::class.java)
-      intent.putExtra("product", product1)
-      startActivity(intent)*/
-  }
+
+    override fun onClick(product: Product) {
+        /*val intent = Intent(this,SecondActivity::class.java)
+        intent.putExtra("product", product1)
+        startActivity(intent)*/
+    }
+
     fun scan() {
         val intent = Intent("com.google.zxing.client.android.SCAN")
         intent.putExtra("SCAN_FORMATS ", "EAN_13")
-        startActivityForResult(intent,0)
+        startActivityForResult(intent, 0)
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        val intent = Intent(this,SecondActivity::class.java)
-        if(data != null && data.extras.containsKey("SCAN_RESULT")) {
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val intent = Intent(this, SecondActivity::class.java)
+        if (data != null && data.extras.containsKey("SCAN_RESULT")) {
+
             intent.putExtra("barcode", data?.getStringExtra("SCAN_RESULT").toString())
+            intent.putExtra("listProduct", listProduct as Serializable)
             //intent.putExtra("product", product1)
             startActivity(intent)
         }
@@ -122,11 +135,11 @@ class MainActivity : AppCompatActivity(), ItemListener {
 
 @Parcelize
 data class Product(
-    var name:String,
-    var mark:String,
-    var barCode:String,
+    var name: String,
+    var mark: String,
+    var barCode: String,
     var nutriscore: String,
-    var url:String,
+    var url: String,
     var quantity: String,
     var cities: List<String?>?,
     var ingredients: List<String?>?,
@@ -139,10 +152,10 @@ data class Product(
 
 @Parcelize
 data class NutritionFactsItem(
-    var unit:String,
-    var quantityPerPortion:String,
-    var quantityFor100g:String
-):Parcelable{
+    var unit: String,
+    var quantityPerPortion: String,
+    var quantityFor100g: String
+) : Parcelable {
 }
 
 @Parcelize
@@ -156,5 +169,5 @@ data class NutritionFacts(
     var proteins: NutritionFactsItem,
     var salt: NutritionFactsItem,
     var sodium: NutritionFactsItem
-):Parcelable {
+) : Parcelable {
 }

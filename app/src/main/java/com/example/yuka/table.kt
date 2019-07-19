@@ -12,7 +12,7 @@ class TableCellView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private val paint: Paint
-    private val borderWidth : Float
+    private val borderWidth: Float
 
     private var top = true
     private var left = true

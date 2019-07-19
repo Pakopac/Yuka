@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface API {
 
     @GET("getProduct")
-    fun getProduct(@Query("barcode") barcode : String)
+    fun getProduct(@Query("barcode") barcode: String)
             : Call<ServerResponse>
 }
 
@@ -19,11 +19,12 @@ object NetworkRequest {
     private val api = Retrofit.Builder()
         .baseUrl("https://api.formation-android.fr/")
         .addConverterFactory(
-            GsonConverterFactory.create())
+            GsonConverterFactory.create()
+        )
         .build()
         .create(API::class.java)
 
-    fun getAPI(barcode: String,  callback: Callback<ServerResponse>) {
+    fun getAPI(barcode: String, callback: Callback<ServerResponse>) {
         return api.getProduct(barcode).enqueue(callback)
     }
 
