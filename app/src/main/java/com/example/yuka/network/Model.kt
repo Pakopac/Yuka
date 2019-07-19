@@ -1,5 +1,8 @@
 package com.example.yuka.network
 
+import android.net.Network
+import com.example.yuka.NutritionFactsItem
+import com.example.yuka.NutritionFacts
 import com.example.yuka.Product
 import com.google.gson.annotations.SerializedName
 
@@ -77,21 +80,43 @@ data class ServerResponse(
             val unit: String?
         )
     }
-    fun toProduct(server: ServerResponse?) : Product {
-        val product = Product(
-            response?.name.toString()
-            , response?.brands.toString(),
-            response?.barcode.toString(),
-            response?.nutriScore.toString(),
-            response?.picture.toString(),
-            response?.quantity.toString(),
-            response?.manufacturingCountries,
-            response?.ingredients,
-            response?.allergens,
-            response?.additives?.values?.toList(),
-            300
-        )
+}
+fun toProduct(server: ServerResponse?) : Product {
+    val product = Product(
+        server?.response?.name.toString(),
+        server?.response?.brands.toString(),
+        server?.response?.barcode.toString(),
+        server?.response?.nutriScore.toString(),
+        server?.response?.picture.toString(),
+        server?.response?.quantity.toString(),
+        server?.response?.manufacturingCountries,
+        server?.response?.ingredients,
+        server?.response?.allergens,
+        server?.response?.additives?.values?.toList(),
+        300,
+        toNutritionFacts(server?.response?.nutritionFacts)
+    )
 
-        return product
-    }
+    return product
+}
+fun toNutritionFacts(server: ServerResponse.NutritionFacts?): NutritionFacts {
+    return NutritionFacts(
+        toNutritionFact(server?.energy),
+        toNutritionFact(server?.fat),
+        toNutritionFact(server?.saturatedFat),
+        toNutritionFact(server?.carbohydrate),
+        toNutritionFact(server?.fiber),
+        toNutritionFact(server?.sugar),
+        toNutritionFact(server?.proteins),
+        toNutritionFact(server?.salt),
+        toNutritionFact(server?.sodium)
+
+    )
+}
+fun toNutritionFact(server: ServerResponse.NutritionFacts.NutritionFact?): NutritionFactsItem {
+    return NutritionFactsItem(
+        server?.unit.toString(),
+        server?.perServing.toString(),
+        server?.per100g.toString()
+    )
 }

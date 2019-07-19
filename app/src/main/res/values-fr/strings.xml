@@ -20,4 +20,19 @@
     <string name="Ingredients_title">Ingrédients</string>
     <string name="allergens_title">Substances allergènes</string>
     <string name="additives_title">Additifs</string>
+    <string name="nutrition_Fat">de Matière grasse / Lipides</string>
+    <string name="nutrition_fattyAcid">d\'Acide gras saturé</string>
+    <string name="nutrition_sugar">de Sucre</string>
+    <string name="nutrition_salt">de Sel</string>
+    <string name="infos_for100gTitle">Pour 100g</string>
+    <string name="infos_perPart">Par part</string>
+    <string name="infos_energy">Energie</string>
+    <string name="infos_fat">Matières grasses</string>
+    <string name="infos_saturatedFattyAcid">dont Acides gras saturés</string>
+    <string name="infos_carbohydrate">Glucides</string>
+    <string name="infos_sugar">dont Sucres</string>
+    <string name="infos_fibers">Fibres alimentaires</string>
+    <string name="infos_proteins">Protéines</string>
+    <string name="infos_salt">Sel</string>
+    <string name="infos_sodium">Sodium</string>
 </resources>

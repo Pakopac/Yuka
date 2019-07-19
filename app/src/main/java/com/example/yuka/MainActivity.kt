@@ -1,30 +1,21 @@
 package com.example.yuka
 
 import android.content.Intent
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.yuka.network.ServerResponse
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.list.*
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(), ItemListener {
 
 
     val listEmpty = listOf<Product>()
 
-    val productList = listOf(Product(
+    /*val productList = listOf(Product(
         "Petits pois et carottes",
         "Cassegrain",
         "Code barres: 3083680085304",
@@ -64,12 +55,13 @@ class MainActivity : AppCompatActivity(), ItemListener {
         listOf("Petits pois 66%", "eau, garniture 2","8% (salade, oignon grelot)", "sucre", "sel", "arôme naturel"),
         listOf("Aucune"),
         listOf("Aucun"),
-        234
+        234,
 
-    )
+
+    )*/
 
     //liste à tester
-    var currentList = productList
+    //var currentList = productList
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
@@ -91,7 +83,8 @@ class MainActivity : AppCompatActivity(), ItemListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(currentList.isEmpty()) {
+        setContentView(R.layout.list_empty)
+        /*if(currentList.isEmpty()) {
             setContentView(R.layout.list_empty)
         }
         else{
@@ -99,7 +92,7 @@ class MainActivity : AppCompatActivity(), ItemListener {
             list.adapter = ProductAdapter(currentList, this)
             list.layoutManager = LinearLayoutManager(this)
 
-        }
+        }*/
 
 
         supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.degrade))
@@ -120,7 +113,7 @@ class MainActivity : AppCompatActivity(), ItemListener {
         val intent = Intent(this,SecondActivity::class.java)
         if(data != null && data.extras.containsKey("SCAN_RESULT")) {
             intent.putExtra("barcode", data?.getStringExtra("SCAN_RESULT").toString())
-            intent.putExtra("product", product1)
+            //intent.putExtra("product", product1)
             startActivity(intent)
         }
     }
@@ -139,5 +132,29 @@ data class Product(
     var ingredients: List<String?>?,
     var allergen: List<String?>?,
     var additives: List<String?>?,
-    var calories: Int) : Parcelable {
+    var calories: Int,
+    var nutrition: NutritionFacts?
+) : Parcelable {
+}
+
+@Parcelize
+data class NutritionFactsItem(
+    var unit:String,
+    var quantityPerPortion:String,
+    var quantityFor100g:String
+):Parcelable{
+}
+
+@Parcelize
+data class NutritionFacts(
+    var energy: NutritionFactsItem,
+    var fat: NutritionFactsItem,
+    var saturatedFattyAcid: NutritionFactsItem,
+    var carbohydrates: NutritionFactsItem,
+    var fibers: NutritionFactsItem,
+    var sugar: NutritionFactsItem,
+    var proteins: NutritionFactsItem,
+    var salt: NutritionFactsItem,
+    var sodium: NutritionFactsItem
+):Parcelable {
 }

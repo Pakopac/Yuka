@@ -1,5 +1,6 @@
 package com.example.yuka
 
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.squareup.picasso.Picasso
@@ -20,7 +22,13 @@ import kotlinx.android.synthetic.main.product_sheet.*
 import androidx.fragment.app.FragmentManager
 import com.example.yuka.network.NetworkRequest.getAPI
 import com.example.yuka.network.ServerResponse
-import kotlinx.android.synthetic.main.product_sheet.view.*
+import com.example.yuka.network.toProduct
+import kotlinx.android.synthetic.main.infos.*
+import kotlinx.android.synthetic.main.nutrition.*
+import kotlinx.android.synthetic.main.nutrition.fat
+import kotlinx.android.synthetic.main.nutrition.salt
+import kotlinx.android.synthetic.main.nutrition.sugar
+import kotlinx.android.synthetic.main.nutrition.view.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -43,9 +51,14 @@ class SecondActivity : AppCompatActivity() {
                                     response: Response<ServerResponse>
             ) {
 
-                val getProducts = response.body()?.toProduct(response.body())
-                Log.d("abcde",response.body()?.toProduct(response.body()).toString())
+                val getProducts = toProduct(response?.body())
+                Log.d("abcde", toProduct(response.body()).toString())
                 viewpager.adapter = ProductDetailsAdapter(supportFragmentManager, getProducts!!)
+
+                circle_fat.setCircleColor(getProducts?.nutrition?.fat?.quantityFor100g!!.toFloat(),3.toFloat(),20.toFloat())
+                circle_fattyAcid.setCircleColor(getProducts?.nutrition?.saturatedFattyAcid?.quantityFor100g!!.toFloat(),1.5.toFloat(),5.toFloat())
+                circle_sugar.setCircleColor(getProducts?.nutrition?.sugar?.quantityFor100g!!.toFloat(),5.toFloat(),12.5.toFloat())
+                circle_salt.setCircleColor(getProducts?.nutrition?.salt?.quantityFor100g!!.toFloat(),0.3.toFloat(),1.5.toFloat())
             }
 
             override fun onFailure(call: Call<ServerResponse>,
@@ -121,12 +134,28 @@ fun TextView.setTitleValue(title: String, value: String?) {
 }
 
 class NutritionFragment() : Fragment(){
+    companion object {
+        fun newInstance(product: Product) : NutritionFragment {
+            val fragment = NutritionFragment()
+            val args = Bundle()
+            args.putParcelable("product", product)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.nutrition,container,false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val product = arguments?.getParcelable<Product>("product")
+        super.onViewCreated(view, savedInstanceState)
+
+        fat?.setNutritionText(product?.nutrition?.fat?.quantityFor100g,product?.nutrition?.fat?.unit, resources.getString(R.string.nutrition_Fat))
+        fatty_acide?.setNutritionText(product?.nutrition?.saturatedFattyAcid?.quantityFor100g,product?.nutrition?.saturatedFattyAcid?.unit, resources.getString(R.string.nutrition_fattyAcid))
+        sugar?.setNutritionText(product?.nutrition?.sugar?.quantityFor100g,product?.nutrition?.sugar?.unit, resources.getString(R.string.nutrition_sugar))
+        salt?.setNutritionText(product?.nutrition?.salt?.quantityFor100g,product?.nutrition?.salt?.unit, resources.getString(R.string.nutrition_salt))
 
     }
 
@@ -134,13 +163,94 @@ class NutritionFragment() : Fragment(){
 
 }
 
+class InfosFragment() : Fragment(){
+    companion object {
+        fun newInstance(product: Product) : InfosFragment {
+            val fragment = InfosFragment()
+            val args = Bundle()
+            args.putParcelable("product", product)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.infos,container,false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val product = arguments?.getParcelable<Product>("product")
+        super.onViewCreated(view, savedInstanceState)
+
+        energy_value100g.setInfosText(product?.nutrition?.energy?.quantityFor100g,product?.nutrition?.energy?.unit)
+        energy_valuePart.setInfosText(product?.nutrition?.energy?.quantityPerPortion,product?.nutrition?.energy?.unit)
+
+        fat_value100g.setInfosText(product?.nutrition?.fat?.quantityFor100g,product?.nutrition?.fat?.unit)
+        fat_valuePart.setInfosText(product?.nutrition?.fat?.quantityPerPortion,product?.nutrition?.fat?.unit)
+
+        saturedFatty_value100g.setInfosText(product?.nutrition?.saturatedFattyAcid?.quantityFor100g,product?.nutrition?.saturatedFattyAcid?.unit)
+        saturedFatty_valuePart.setInfosText(product?.nutrition?.saturatedFattyAcid?.quantityPerPortion,product?.nutrition?.saturatedFattyAcid?.unit)
+
+        carbohydrate_value100g.setInfosText(product?.nutrition?.carbohydrates?.quantityFor100g,product?.nutrition?.carbohydrates?.unit)
+        carbohydrate_valuePart.setInfosText(product?.nutrition?.carbohydrates?.quantityPerPortion,product?.nutrition?.carbohydrates?.unit)
+
+        sugar_value100g.setInfosText(product?.nutrition?.sugar?.quantityFor100g,product?.nutrition?.sugar?.unit)
+        sugar_valuePart.setInfosText(product?.nutrition?.sugar?.quantityPerPortion,product?.nutrition?.sugar?.unit)
+
+        fibers_value100g.setInfosText(product?.nutrition?.fibers?.quantityFor100g,product?.nutrition?.fibers?.unit)
+        fibers_valuePart.setInfosText(product?.nutrition?.fibers?.quantityPerPortion,product?.nutrition?.fibers?.unit)
+
+        proteins_value100g.setInfosText(product?.nutrition?.proteins?.quantityFor100g,product?.nutrition?.proteins?.unit)
+        proteins_valuePart.setInfosText(product?.nutrition?.proteins?.quantityPerPortion,product?.nutrition?.proteins?.unit)
+
+        salt_value100g.setInfosText(product?.nutrition?.salt?.quantityFor100g,product?.nutrition?.salt?.unit)
+        salt_valuePart.setInfosText(product?.nutrition?.salt?.quantityPerPortion,product?.nutrition?.salt?.unit)
+
+        sodium_value100g.setInfosText(product?.nutrition?.sodium?.quantityFor100g,product?.nutrition?.sodium?.unit)
+        sodium_valuePart.setInfosText(product?.nutrition?.sodium?.quantityPerPortion,product?.nutrition?.sodium?.unit)
+
+    }
+
+
+
+}
+
+fun TextView.setNutritionText(value: String?, unit: String?, element: String) {
+    text = SpannableString("$value$unit $element").apply {
+        setSpan(StyleSpan(Typeface.NORMAL), 0, element.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+    }
+}
+
+fun TextView.setInfosText(value: String?, unit: String?) {
+    text = SpannableString("$value$unit").apply {
+        setSpan(StyleSpan(Typeface.NORMAL), 0, value!!.length + unit!!.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+    }
+
+}
+
+fun View.setCircleColor(value:Float, min:Float , max:Float) {
+    var color:Int = R.color.nutrient_level_low
+
+        if(value < min){
+            color = R.color.nutrient_level_low
+        }
+        else if(min < value && value < max){
+            color = R.color.nutrient_level_moderate
+        }
+        else if(value > max){
+            color = R.color.nutrient_level_high
+        }
+
+    DrawableCompat.setTintList(background, ColorStateList.valueOf(resources.getColor(color)))
+}
+
 class ProductDetailsAdapter(fm: FragmentManager, product: Product) : FragmentPagerAdapter(fm) {
     val product = product
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> SheetFragment.newInstance(product)
-            1 -> NutritionFragment()
-            2 -> NutritionFragment()
+            1 -> NutritionFragment.newInstance(product)
+            2 -> InfosFragment.newInstance(product)
             else -> throw Exception("Unknown position")
         }
     }
